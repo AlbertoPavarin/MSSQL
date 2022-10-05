@@ -1,0 +1,120 @@
+/* Creazione di una library */
+CREATE DATABASE quinta_f_library;
+
+/* database di lavoro db_name */
+USE quinta_f_library;
+
+/* 
+ * CREATE TABLE table_name (
+ * 	attribute_name type attribute_constraint, 
+ * 	...,
+ * 	table constraint,
+ * );
+ * 
+ * attribute NOT NULL & UNIQUE (PRIMARY KEY)
+ */
+
+CREATE TABLE book(
+	ISBN NVARCHAR(13) PRIMARY KEY,
+	title NVARCHAR (100) NOT NULL,
+);
+
+/* Popolamento tabella libri 
+ * INSERT INTO table_name (attribute1_name, ..., attributeN_name) 
+ * VALUES (value1, ..., valueN);
+ * */
+
+INSERT INTO book (ISBN, title) 
+VALUES ('9788836007745', 'SQL&PHP');
+
+/* 
+ * Aggiunta di un attributo
+ * Modifichiamo la tabella con 
+ * ALTER TABLE table_name
+ * ADD attribute_name type attribute_constraint
+*/
+
+ALTER TABLE book 
+ADD publishing_house NVARCHAR(20);
+
+ALTER TABLE book 
+DROP COLUMN publishing_house;
+
+
+/* Modificare un record 
+ * UPDATE table_name
+ * SET attribute_name = value
+ * WHERE condition
+ * */
+UPDATE book 
+SET publishing_house = 'HOEPLI' 
+WHERE ISBN = '9788836007745'; 
+
+INSERT INTO book (ISBN, title, publishing_house) 
+VALUES ('9788826823317', 'NUOVO Scienze e Tecnologie Applicate con ARDUINO', 'Atlast');
+
+INSERT INTO book (ISBN, title, publishing_house) 
+VALUES ('9788820383411', 'DATAG@ME', 'HOEPLI');
+
+SELECT * FROM book;
+
+/*
+ * Tabella delle case editrici 
+*/
+CREATE TABLE publishing_house(
+	id INT IDENTITY(1, 1) PRIMARY KEY, /* IDENTITY serve per fare un campo auto incrementare, il primo 1 è il numero di partenza, il secondo 1 è di quanto incrementare */
+	publishing_house NVARCHAR(20) NOT NULL
+);
+
+INSERT INTO publishing_house (publishing_house)
+SELECT DISTINCT publishing_house
+FROM book;
+
+SELECT *
+FROM publishing_house;
+
+SELECT *
+FROM book;
+
+SELECT b.ISBN as 'Codice ISBN', b.title as 'Titolo', ph.id as 'Codice Casa Editrice'
+FROM book b JOIN publishing_house ph 
+ON b.publishing_house = ph.publishing_house;
+
+/* Ipotesi 1: nuova tabella */
+
+SELECT b.ISBN as 'ISBN', b.title as 'title', ph.id as 'id_publishing_house'
+INTO book_new /* Creata nuova tabella */
+FROM book b JOIN publishing_house ph 
+ON b.publishing_house = ph.publishing_house;
+
+SELECT *
+FROM book_new
+WHERE 1=1;
+
+/* Ipotesi 2: aggiornamento dei dati sulla tabella esistente */
+/*
+ * 1 Passaggio: è creare l'attributo id_publishing_name
+ * 				sulla tabella book
+ * 
+ * 2 Passaggio: Aggiornare le tuple prelevando le informazioni
+ * 				dalla tabella publishing_name 
+ * 
+ * N.B. nel nostro caso l'attributo publishing_house di publishing_house non deve essere UNIQUE
+ */
+
+ALTER TABLE book 
+ADD id_publishing_name INT;
+
+SELECT * FROM book;
+
+ALTER TABLE publishing_house  
+ADD UNIQUE(publishing_house);
+
+UPDATE b 
+SET b.id_publishing_name = ph.id
+FROM book b LEFT JOIN publishing_house ph  
+ON b.publishing_house = ph.publishing_house;
+
+ALTER TABLE book 
+DROP COLUMN publishing_house;
+
