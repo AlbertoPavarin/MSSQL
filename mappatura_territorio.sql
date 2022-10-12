@@ -1,0 +1,31 @@
+CREATE DATABASE mappatura_territorio;
+USE mappatura_territorio;
+
+CREATE TABLE elenco_comuni(
+	codice_regione NVARCHAR(2) NOT NULL, 
+	cuts NVARCHAR(3) NOT NULL,
+	codice_provincia NVARCHAR(3) NOT NULL,
+	progressivo_comune NVARCHAR(5) NOT NULL, 
+	codice_comune_alfa NVARCHAR(6) NOT NULL, 
+	denominazione NVARCHAR(100) NOT NULL, 
+	denominazione_ita NVARCHAR(40) NOT NULL,
+	denominazione_altra_lingua NVARCHAR(40),
+	codice_ripartizione_geo NVARCHAR(1) NOT NULL, 
+	ripartizione_geo NVARCHAR(10) NOT NULL, 
+	denominazione_regione NVARCHAR(30) NOT NULL,
+	duts NVARCHAR(40) NOT NULL,
+	tuts NVARCHAR(1) NOT NULL, 
+	flag_capoluogo NVARCHAR(1) NOT NULL,
+	sigla_auto NVARCHAR(2) NOT NULL,
+	codice_comune_numerico NVARCHAR(6) NOT NULL,
+	codice_comune_numerico_10_16 NVARCHAR(6) NOT NULL,
+	codice_comune_numerico_06_09 NVARCHAR(6) NOT NULL,
+	codice_comune_numerico_95_05 NVARCHAR(6) NOT NULL,
+	codice_castale_comune NVARCHAR(4) NOT NULL,
+	nuts_s1_10 NVARCHAR(3) NOT NULL,
+	nuts_s2_10 NVARCHAR(4) NOT NULL,
+	nuts_s3_10 NVARCHAR(5) NOT NULL,
+	nuts_s1_21 NVARCHAR(3) NOT NULL,
+	nuts_s2_21 NVARCHAR(4) NOT NULL,
+	nuts_s3_21 NVARCHAR(5) NOT NULL,
+);
